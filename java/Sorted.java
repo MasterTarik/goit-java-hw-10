@@ -7,16 +7,30 @@ import java.util.List;
 import java.util.Locale;
 
 public class Sorted {
-    private List<String> list;
+    private static List<String> list;
 
     public static void main(String[] args) {
-        Sorted sorted = new Sorted();
-        sorted.list = sorted.uploadListFromFile();
 
-        System.out.println("Used names: " + sorted.list);
-        System.out.println("Task 1.: \n" + sorted.unpaired(sorted.list));
-        System.out.println("Task 2.: \n" + sorted.sortedList(sorted.list));
-        System.out.println(Arrays.toString(sorted.reversAndUpperCaseList(sorted.list)));
+        String fileDirectoryTask1and2 = "src\\main\\resources\\namelist.txt";
+        String fileDirectoryTask3 = "src\\main\\resources\\integerList.txt";
+
+        Sorted task = new Sorted();
+        task.uploadListFromFile(fileDirectoryTask1and2);
+
+        System.out.println("Used names: " + task.list);
+        System.out.println("Task 1.: \n" + task.unpaired(task.list));
+        task.sortedList();
+        System.out.println("Task 2.: \n" + task.list);
+        System.out.println(Arrays.toString(task.reversAndUpperCaseList()));
+
+        Sorted task3 = new Sorted();
+        task3.uploadListFromFile(fileDirectoryTask3);
+        task3.sortedList();
+        System.out.println("Task 3:. \n" + task3.list);
+        System.out.println("separator " + task3.intSeparator());
+
+        System.out.println("int: " + task3.intArray());
+
     }
 
     public Sorted() {
@@ -37,33 +51,45 @@ public class Sorted {
         return result;
     }
 
-    public List<String> sortedList(List<String> list) {
-        List<String> stringList = list;
-        stringList.sort(String::compareToIgnoreCase);
-
-        return stringList;
+    public void sortedList() {
+        this.list.sort(String::compareToIgnoreCase);
     }
 
-    public String[] reversAndUpperCaseList(List<String> stringList) {
-        String[] revers = new String[stringList.size()];
-        for (int i = 1; i <= stringList.size(); i++) {
-            revers[stringList.size() - i] = stringList.get(i - 1).toUpperCase(Locale.ROOT);
+    public String[] reversAndUpperCaseList() {
+        String[] revers = new String[this.list.size()];
+        for (int i = 1; i <= this.list.size(); i++) {
+            revers[this.list.size() - i] = this.list.get(i - 1).toUpperCase(Locale.ROOT);
         }
         return revers;
     }
 
-    private List<String> uploadListFromFile() {
-        List<String> getList = new ArrayList<>();
-        try (FileReader file = new FileReader("src\\main\\resources\\namelist.txt")) {
-            BufferedReader bufferedReader = new BufferedReader(file);
+    public List<Integer> intArray() {
+        List<Integer> result = new ArrayList<>();
+        for (String intString : intSeparator().split("\\s+")) {
+            result.add(Integer.parseInt(intString));
+        }
+        result.sort(Integer::compareTo);
+        return result;
+    }
 
-            while (bufferedReader.readLine() != null) {
-                getList.add(bufferedReader.readLine());
+    public String intSeparator() {
+        String result = "";
+        for (String str : list) {
+            result = result + str.strip() + " ";
+        }
+        return result;
+    }
+
+    private void uploadListFromFile(String fileDirectory) {
+        this.list = new ArrayList<>();
+        try (FileReader file = new FileReader(fileDirectory)) {
+            BufferedReader bufferedReader = new BufferedReader(file);
+            String str;
+            while ((str = bufferedReader.readLine()) != null) {
+                this.list.add(str);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return getList;
     }
-
 }
