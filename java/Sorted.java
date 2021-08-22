@@ -28,7 +28,6 @@ public class Sorted {
         task3.sortedList();
         System.out.println("Task 3:. \n" + task3.list);
         System.out.println("separator " + task3.intSeparator());
-
         System.out.println("int: " + task3.intArray());
 
     }
@@ -52,13 +51,13 @@ public class Sorted {
     }
 
     public void sortedList() {
-        this.list.sort(String::compareToIgnoreCase);
+        list.sort(String::compareToIgnoreCase);
     }
 
     public String[] reversAndUpperCaseList() {
-        String[] revers = new String[this.list.size()];
-        for (int i = 1; i <= this.list.size(); i++) {
-            revers[this.list.size() - i] = this.list.get(i - 1).toUpperCase(Locale.ROOT);
+        String[] revers = new String[list.size()];
+        for (int i = 1; i <= list.size(); i++) {
+            revers[list.size() - i] = list.get(i - 1).toUpperCase(Locale.ROOT);
         }
         return revers;
     }
@@ -81,12 +80,12 @@ public class Sorted {
     }
 
     private void uploadListFromFile(String fileDirectory) {
-        this.list = new ArrayList<>();
+        list = new ArrayList<>();
         try (FileReader file = new FileReader(fileDirectory)) {
             BufferedReader bufferedReader = new BufferedReader(file);
             String str;
             while ((str = bufferedReader.readLine()) != null) {
-                this.list.add(str);
+                list.add(str);
             }
         } catch (IOException e) {
             e.printStackTrace();
